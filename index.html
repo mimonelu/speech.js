@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html class="element">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="mimonelu">
+        <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no">
+        <title>speech.js</title>
+        <link href="http://mimonelu.github.io/element.css/dst/element.css" rel="stylesheet" type="text/css">
+        <script src="./speech.js"></script>
+    </head>
+    <body>
+        <header>
+            <h2><a href="/">mimonelu</a></h2>
+        </header>
+        <article>
+            <h1>speech.js</h1>
+            <p>speech.js は Web Speech Synthesis API のラッパーライブラリです。</p>
+            <pre>&lt;script src="./speech.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+    Speech.setText("文字列").setVolume(0.5).start();
+&lt;/script&gt;</pre>
+            <p>他の関数はこの HTML のソースコードを見てください。</p>
+            <p><a href="https://github.com/mimonelu/speech.js">Github</a></p>
+            <hr>
+            <h2>デモ</h2>
+            <p>状態 <code class="status"></code></p>
+            <textarea class="textarea_ja" rows="3">
+夢を追い続ける勇気さえあれば、すべての夢は実現できる。忘れないでほしい。全てはたった一匹のネズミから始まったということを。</textarea>
+            <div><button onclick="Speech.setLang('ja-UP').setRate(1.0).setText(document.querySelector('.textarea_ja').value).start();">テキストエリア内の日本語を再生する</button></div>
+            <textarea class="textarea_en" rows="3">
+All our dreams can come true, if we have the courage to pursue them. I only hope that we don’t lose sight of one thing – that it was all started by a mouse.</textarea>
+            <div><button onclick="Speech.setLang('en-GB').setRate(1.0).setText(document.querySelector('.textarea_en').value).start();">テキストエリア内の英語を再生する</button></div>
+        </article>
+        <footer>
+            <small>&copy; 2016 mimonelu</small>
+        </footer>
+    </body>
+    <script>
+
+;(function () {
+    var statusNode = document.querySelector(".status");
+    if (Speech.getStatus()) {
+        statusNode.innerHTML = "ここに再生の状態が記述されます。";
+    } else {
+        statusNode.innerHTML = "Web Speech Synthesis API がサポートされていません。";
+    }
+    Speech.setOnError(function () {
+        statusNode.innerHTML = "エラーが発生しました。";
+    });
+    Speech.setOnStart(function () {
+        statusNode.innerHTML = "再生が開始しました。";
+    });
+    Speech.setOnPause(function () {
+        statusNode.innerHTML = "再生が中断しました。";
+    });
+    Speech.setOnResume(function () {
+        statusNode.innerHTML = "再生が再開しました。";
+    });
+    Speech.setOnEnd(function () {
+        statusNode.innerHTML = "再生が完了しました。";
+    });
+})();
+
+    </script>
+</html>
