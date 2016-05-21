@@ -6,7 +6,7 @@
 
         var ssu = null;
 
-        var voices = null;
+        var voices = [];
 
         var initialize = function () {
             if ("SpeechSynthesisUtterance" in window) {
@@ -15,7 +15,6 @@
                 voices = window.speechSynthesis.getVoices();
             } else {
                 enabled = false;
-                console.error("Web Speech Synthesis API is not supported.");
             }
             return window.Speech;
         };
@@ -25,19 +24,47 @@
         };
 
         var setDefaults = function () {
-            if (enabled === true) {
-                ssu.pitch = 1.0;
-                ssu.rate = 1.0;
-                ssu.voice = voices[0] || null;
-                ssu.volume = 1.0;
-                ssu.lang = "ja-JP";
-            }
-            return window.Speech;
+            return setLang("en-GB")
+                .setVoiceByLang("en-GB")
+                .setPitch(1.0)
+                .setRate(1.0)
+                .setVolume(1.0);
         };
 
         var setLang = function (lang) {
             if (enabled === true) {
                 ssu.lang = lang;
+            }
+            return window.Speech;
+        };
+
+        var getVoices = function () {
+            return voices;
+        };
+
+        var getVoicesByLang = function (lang) {
+            var results = [];
+            for (var i = 0; voices[i] !== undefined; i ++) {
+                if (voices[i].lang.indexOf(lang) !== - 1) {
+                    results.push(voices[i]);
+                }
+            }
+            return results;
+        };
+
+        var setVoice = function (voice) {
+            if (enabled === true) {
+                ssu.voice = voice || null;
+            }
+            return window.Speech;
+        };
+
+        var setVoiceByLang = function (lang) {
+            if (enabled === true) {
+                var voices = getVoicesByLang(lang);
+                if (voices[0] !== undefined) {
+                    setVoice(voices[0]);
+                }
             }
             return window.Speech;
         };
@@ -56,6 +83,13 @@
             return window.Speech;
         };
 
+        var setVolume = function (volume) {
+            if (enabled === true) {
+                ssu.volume = volume;
+            }
+            return window.Speech;
+        };
+
         var setText = function (text) {
             if (enabled === true) {
                 ssu.text = text;
@@ -63,20 +97,30 @@
             return window.Speech;
         };
 
-        var getVoices = function () {
-            return voices;
-        };
-
-        var setVoice = function (voiceIndex) {
+        var start = function () {
             if (enabled === true) {
-                ssu.voice = voices[voiceIndex] || null;
+                window.speechSynthesis.speak(ssu);
             }
             return window.Speech;
         };
 
-        var setVolume = function (volume) {
+        var stop = function () {
             if (enabled === true) {
-                ssu.volume = volume;
+                window.speechSynthesis.cancel();
+            }
+            return window.Speech;
+        };
+
+        var pause = function () {
+            if (enabled === true) {
+                window.speechSynthesis.pause();
+            }
+            return window.Speech;
+        };
+
+        var resume = function () {
+            if (enabled === true) {
+                window.speechSynthesis.resume();
             }
             return window.Speech;
         };
@@ -130,32 +174,30 @@
             return window.Speech;
         };
 
-        var start = function () {
-            if (enabled === true) {
-                window.speechSynthesis.speak(ssu);
-            }
-            return window.Speech;
-        };
-
         return {
             "initialize": initialize,
             "getStatus": getStatus,
             "setDefaults": setDefaults,
             "setLang": setLang,
+            "getVoices": getVoices,
+            "getVoicesByLang": getVoicesByLang,
+            "setVoice": setVoice,
+            "setVoiceByLang": setVoiceByLang,
             "setPitch": setPitch,
             "setRate": setRate,
             "setText": setText,
-            "getVoices": getVoices,
-            "setVoice": setVoice,
             "setVolume": setVolume,
+            "start": start,
+            "stop": stop,
+            "pause": pause,
+            "resume": resume,
             "setOnError": setOnError,
             "setOnStart": setOnStart,
             "setOnBoundary": setOnBoundary,
             "setOnPause": setOnPause,
             "setOnResume": setOnResume,
             "setOnEnd": setOnEnd,
-            "setOnMark": setOnMark,
-            "start": start
+            "setOnMark": setOnMark
         };
 
     })();
