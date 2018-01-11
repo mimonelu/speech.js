@@ -19,7 +19,7 @@
             } else {
                 enabled = false;
             }
-            return window.Speech;
+            return window.Speech.setDefaults();
         };
 
         var getStatus = function () {
@@ -204,7 +204,5 @@
         };
 
     })();
-
-    window.Speech.initialize().setDefaults();
 
 })();
