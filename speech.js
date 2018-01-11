@@ -8,11 +8,14 @@
 
         var voices = [];
 
-        var initialize = function () {
+        var init = function (callback) {
             if ("SpeechSynthesisUtterance" in window) {
                 enabled = true;
                 ssu = new window.SpeechSynthesisUtterance();
-                voices = window.speechSynthesis.getVoices();
+                window.speechSynthesis.addEventListener("voiceschanged", function () {
+                    voices = window.speechSynthesis.getVoices();
+                    callback && callback();
+                });
             } else {
                 enabled = false;
             }
@@ -175,7 +178,7 @@
         };
 
         return {
-            "initialize": initialize,
+            "init": init,
             "getStatus": getStatus,
             "setDefaults": setDefaults,
             "setLang": setLang,
