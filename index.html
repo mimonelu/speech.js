@@ -146,29 +146,29 @@ All our dreams can come true, if we have the courage to pursue them. I only hope
     </body>
     <script>
 
-;(function () {
-    var statusNode = document.querySelector(".status");
+(() => {
+    const statusNode = document.querySelector(".status")
     if (Speech.getStatus()) {
-        statusNode.innerHTML = "ここに再生の状態が記述されます。";
+        statusNode.innerHTML = "ここに再生の状態が記述されます。"
     } else {
-        statusNode.innerHTML = "Web Speech Synthesis API がサポートされていません。";
+        statusNode.innerHTML = "Web Speech Synthesis API がサポートされていません。"
     }
-    Speech.setOnError(function () {
-        statusNode.innerHTML = "エラーが発生しました。";
+    Speech.setOnError(() => {
+        statusNode.innerHTML = "エラーが発生しました。"
     })
-    .setOnStart(function () {
-        statusNode.innerHTML = "再生が開始しました。";
+    .setOnStart(() => {
+        statusNode.innerHTML = "再生が開始しました。"
     })
-    .setOnPause(function () {
-        statusNode.innerHTML = "再生が中断しました。";
+    .setOnPause(() => {
+        statusNode.innerHTML = "再生が中断しました。"
     })
-    .setOnResume(function () {
-        statusNode.innerHTML = "再生が再開しました。";
+    .setOnResume(() => {
+        statusNode.innerHTML = "再生が再開しました。"
     })
-    .setOnEnd(function () {
-        statusNode.innerHTML = "再生が完了しました。";
-    });
-})();
+    .setOnEnd(() => {
+        statusNode.innerHTML = "再生が完了しました。"
+    })
+})()
 
     </script>
 </html>
