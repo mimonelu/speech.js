@@ -1,174 +1,181 @@
 <!DOCTYPE html>
-<html class="element">
-    <head>
-        <meta charset="utf-8">
-        <meta name="author" content="mimonelu">
-        <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no">
-        <title>speech.js</title>
-        <link href="http://mimonelu.github.io/element.css/dst/element.css" rel="stylesheet" type="text/css">
-        <script src="./speech.js"></script>
-    </head>
-    <body>
-        <header>
-            <h2><a href="/">mimonelu</a></h2>
-        </header>
-        <article>
-            <h1>speech.js</h1>
-            <p>speech.js は Web Speech Synthesis API のラッパーライブラリです。</p>
-            <p><a href="https://github.com/mimonelu/speech.js">Github リポジトリ</a></p>
-            <h2>デモ</h2>
-            <p>状態 <code class="status"></code></p>
-            <asset>
-                <button onclick="Speech.stop();">停止</button>
-                <button onclick="Speech.pause();">中断</button>
-                <button onclick="Speech.resume();">再開</button>
-            </asset>
-            <textarea class="textarea_ja" rows="3">
+<html class="motoko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="author" content="mimonelu">
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no">
+    <title>speech.js</title>
+    <link href="https://mimonelu.net/motoko-css/motoko.css" rel="stylesheet" type="text/css">
+    <script src="./speech.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>speech.js</h1>
+    </header>
+    <article>
+      <p>speech.js は Web Speech Synthesis API のラッパーライブラリです。</p>
+      <p><a href="https://github.com/mimonelu/speech.js">Github リポジトリ</a></p>
+      <h2>デモ</h2>
+      <p>状態 <code class="status"></code></p>
+      <asset>
+        <button onclick="Speech.stop();">停止</button>
+        <button onclick="Speech.pause();">中断</button>
+        <button onclick="Speech.resume();">再開</button>
+      </asset>
+      <textarea class="textarea_ja" rows="3">
 夢を追い続ける勇気さえあれば、すべての夢は実現できる。忘れないでほしい。全てはたった一匹のネズミから始まったということを。</textarea>
-            <div><button onclick="Speech.setLang('ja-JP').setVoiceByLang('ja').setText(document.querySelector('.textarea_ja').value).start();">テキストエリア内の日本語を再生</button></div>
-            <textarea class="textarea_en" rows="3">
+      <div><button onclick="Speech.setLang('ja-JP').setVoiceByLang('ja').setText(document.querySelector('.textarea_ja').value).start();">テキストエリア内の日本語を再生</button></div>
+      <textarea class="textarea_en" rows="3">
 All our dreams can come true, if we have the courage to pursue them. I only hope that we don’t lose sight of one thing – that it was all started by a mouse.</textarea>
-            <div><button onclick="Speech.setLang('en-GB').setVoiceByLang('en-GB').setText(document.querySelector('.textarea_en').value).start();">テキストエリア内の英語を再生</button></div>
-            <h2>使用例</h2>
-            <pre>&lt;script src="./speech.js"&gt;&lt;/script&gt;
+      <div><button onclick="Speech.setLang('en-GB').setVoiceByLang('en-GB').setText(document.querySelector('.textarea_en').value).start();">テキストエリア内の英語を再生</button></div>
+      <h2>使用例</h2>
+      <pre>&lt;script src="./speech.js"&gt;&lt;/script&gt;
 &lt;script&gt;
 
-    // 英文を読み上げる
-    // ※ speech.js はデフォルトで英文を読み上げる仕様。
-    Speech.setLang("en-GB").setVoiceByLang("en-GB");
-    Speech.setText("English Text").start();
+  // 初期化
+  Speech.init();
 
-    // 日本語文を読み上げる
-    Speech.setLang("ja-JP").setVoiceByLang("ja");
-    Speech.setText("日本語の文章").start();
+  // 中断後にページを更新した場合、なぜか中断状態が保持されてしまうため、いったん停止した方が良い
+  Speech.stop();
+
+  // 英文を読み上げる
+  // ※ speech.js はデフォルトで英文を読み上げる仕様。
+  Speech.setLang("en-GB").setVoiceByLang("en-GB");
+  Speech.setText("English Text").start();
+
+  // 日本語文を読み上げる
+  Speech.setLang("ja-JP").setVoiceByLang("ja");
+  Speech.setText("日本語の文章").start();
 
 &lt;/script&gt;</pre>
-            <h2>関数一覧</h2>
-            <ul>
-                <li>
-                    <code>Speech Speech.<b>initialize</b>()</code><br>
-                    初期化する。スクリプトが読み込まれた時点で自動的に実行される。
-                </li>
-                <li>
-                    <code>bool Speech.<b>getStatus</b>()</code><br>
-                    API が使用可能かどうか。
-                </li>
-                <li>
-                    <code>Speech Speech.<b>setDefaults</b>()</code><br>
-                    デフォルト値を設定する。スクリプトが読み込まれた時点で自動的に実行される。
-                </li>
-                <li>
-                    <code>Speech Speech.<b>setLang</b>(string)</code><br>
-                    言語を設定する。
-                </li>
-                <li>
-                    <code>SpeechSynthesisVoice[] Speech.<b>getVoices</b>()</code><br>
-                    SpeechSynthesisVoice オブジェクトの配列を取得する。
-                </li>
-                <li>
-                    <code>SpeechSynthesisVoice[] Speech.<b>getVoicesByLang</b>(string)</code><br>
-                    文字列を含む言語名に対応した SpeechSynthesisVoice オブジェクトの配列を取得する。
-                </li>
-                <li>
-                    <code>Speech Speech.<b>setVoice</b>(SpeechSynthesisVoice)</code><br>
-                    SpeechSynthesisVoice オブジェクトを設定する。
-                </li>
-                <li>
-                    <code>Speech Speech.<b>setVoiceByLang</b>(string)</code><br>
-                    文字列を含む言語名に対応した SpeechSynthesisVoice オブジェクトを設定する。<br>
-                    オブジェクトが複数ある場合、最初にヒットしたオブジェクトが使用される。
-                </li>
-                <li>
-                    <code>Speech Speech.<b>setPitch</b>(float)</code><br>
-                    音声の高低を設定する。
-                </li>
-                <li>
-                    <code>Speech Speech.<b>setRate</b>(float)</code><br>
-                    音声の速度を設定する。
-                </li>
-                <li>
-                    <code>Speech Speech.<b>setText</b>(string)</code><br>
-                    文章を設定する。
-                </li>
-                <li>
-                    <code>Speech Speech.<b>setVolume</b>(float)</code><br>
-                    音量を設定する。
-                </li>
-                <li>
-                    <code>Speech Speech.<b>start</b>()</code><br>
-                    読み上げを開始する。
-                </li>
-                <li>
-                    <code>Speech Speech.<b>stop</b>()</code><br>
-                    読み上げを停止する。
-                </li>
-                <li>
-                    <code>Speech Speech.<b>pause</b>()</code><br>
-                    読み上げを一時停止する。
-                </li>
-                <li>
-                    <code>Speech Speech.<b>resume</b>()</code><br>
-                    一時停止した読み上げを再開する。
-                </li>
-                <li>
-                    <code>Speech Speech.<b>setOnError</b>(function)</code><br>
-                    エラー時に実行される関数を設定する。
-                </li>
-                <li>
-                    <code>Speech Speech.<b>setOnStart</b>(function)</code><br>
-                    読み上げ開始時に実行される関数を設定する。
-                </li>
-                <li>
-                    <code>Speech Speech.<b>setOnBoundary</b>(function)</code><br>
-                    単語の読み上げ開始時に実行される関数を設定する。
-                </li>
-                <li>
-                    <code>Speech Speech.<b>setOnPause</b>(function)</code><br>
-                    読み上げ一時停止時に実行される関数を設定する。
-                </li>
-                <li>
-                    <code>Speech Speech.<b>setOnResume</b>(function)</code><br>
-                    読み上げ再開時に実行される関数を設定する。
-                </li>
-                <li>
-                    <code>Speech Speech.<b>setOnEnd</b>(function)</code><br>
-                    読み上げ停止／完了時に実行される関数を設定する。
-                </li>
-                <li>
-                    <code>Speech Speech.<b>setOnMark</b>(function)</code><br>
-                    SSML mark タグの読み上げ開始時に実行される関数を設定する。
-                </li>
-            </ul>
-        </article>
-        <footer>
-            <small>&copy; 2016 mimonelu</small>
-        </footer>
-    </body>
-    <script>
+      <h2>関数一覧</h2>
+      <ul>
+        <li>
+          <code>Speech Speech.<b>init</b>()</code><br>
+          初期化する。
+        </li>
+        <li>
+          <code>bool Speech.<b>getStatus</b>()</code><br>
+          API が使用可能かどうか。
+        </li>
+        <li>
+          <code>Speech Speech.<b>setDefaults</b>()</code><br>
+          デフォルト値を設定する。スクリプトが読み込まれた時点で自動的に実行される。
+        </li>
+        <li>
+          <code>Speech Speech.<b>setLang</b>(string)</code><br>
+          言語を設定する。
+        </li>
+        <li>
+          <code>SpeechSynthesisVoice[] Speech.<b>getVoices</b>()</code><br>
+          SpeechSynthesisVoice オブジェクトの配列を取得する。
+        </li>
+        <li>
+          <code>SpeechSynthesisVoice[] Speech.<b>getVoicesByLang</b>(string)</code><br>
+          文字列を含む言語名に対応した SpeechSynthesisVoice オブジェクトの配列を取得する。
+        </li>
+        <li>
+          <code>Speech Speech.<b>setVoice</b>(SpeechSynthesisVoice)</code><br>
+          SpeechSynthesisVoice オブジェクトを設定する。
+        </li>
+        <li>
+          <code>Speech Speech.<b>setVoiceByLang</b>(string)</code><br>
+          文字列を含む言語名に対応した SpeechSynthesisVoice オブジェクトを設定する。<br>
+          オブジェクトが複数ある場合、最初にヒットしたオブジェクトが使用される。
+        </li>
+        <li>
+          <code>Speech Speech.<b>setPitch</b>(float)</code><br>
+          音声の高低を設定する。
+        </li>
+        <li>
+          <code>Speech Speech.<b>setRate</b>(float)</code><br>
+          音声の速度を設定する。
+        </li>
+        <li>
+          <code>Speech Speech.<b>setText</b>(string)</code><br>
+          文章を設定する。
+        </li>
+        <li>
+          <code>Speech Speech.<b>setVolume</b>(float)</code><br>
+          音量を設定する。
+        </li>
+        <li>
+          <code>Speech Speech.<b>start</b>()</code><br>
+          読み上げを開始する。
+        </li>
+        <li>
+          <code>Speech Speech.<b>stop</b>()</code><br>
+          読み上げを停止する。
+        </li>
+        <li>
+          <code>Speech Speech.<b>pause</b>()</code><br>
+          読み上げを一時停止する。
+        </li>
+        <li>
+          <code>Speech Speech.<b>resume</b>()</code><br>
+          一時停止した読み上げを再開する。
+        </li>
+        <li>
+          <code>Speech Speech.<b>setOnError</b>(function)</code><br>
+          エラー時に実行される関数を設定する。
+        </li>
+        <li>
+          <code>Speech Speech.<b>setOnStart</b>(function)</code><br>
+          読み上げ開始時に実行される関数を設定する。
+        </li>
+        <li>
+          <code>Speech Speech.<b>setOnBoundary</b>(function)</code><br>
+          単語の読み上げ開始時に実行される関数を設定する。
+        </li>
+        <li>
+          <code>Speech Speech.<b>setOnPause</b>(function)</code><br>
+          読み上げ一時停止時に実行される関数を設定する。
+        </li>
+        <li>
+          <code>Speech Speech.<b>setOnResume</b>(function)</code><br>
+          読み上げ再開時に実行される関数を設定する。
+        </li>
+        <li>
+          <code>Speech Speech.<b>setOnEnd</b>(function)</code><br>
+          読み上げ停止／完了時に実行される関数を設定する。
+        </li>
+        <li>
+          <code>Speech Speech.<b>setOnMark</b>(function)</code><br>
+          SSML mark タグの読み上げ開始時に実行される関数を設定する。
+        </li>
+      </ul>
+    </article>
+    <footer>
+      <small>&copy; 2016 mimonelu</small>
+    </footer>
+  </body>
+  <script>
 
 ;(function () {
-    var statusNode = document.querySelector(".status");
-    if (Speech.getStatus()) {
-        statusNode.innerHTML = "ここに再生の状態が記述されます。";
-    } else {
-        statusNode.innerHTML = "Web Speech Synthesis API がサポートされていません。";
-    }
-    Speech.setOnError(function () {
-        statusNode.innerHTML = "エラーが発生しました。";
-    })
-    .setOnStart(function () {
-        statusNode.innerHTML = "再生が開始しました。";
-    })
-    .setOnPause(function () {
-        statusNode.innerHTML = "再生が中断しました。";
-    })
-    .setOnResume(function () {
-        statusNode.innerHTML = "再生が再開しました。";
-    })
-    .setOnEnd(function () {
-        statusNode.innerHTML = "再生が完了しました。";
-    });
+  var statusNode = document.querySelector(".status");
+  Speech.init();
+  Speech.stop();
+  if (Speech.getStatus()) {
+    statusNode.innerHTML = "ここに再生の状態が記述されます。";
+  } else {
+    statusNode.innerHTML = "Web Speech Synthesis API がサポートされていません。";
+  }
+  Speech.setOnError(function () {
+    statusNode.innerHTML = "エラーが発生しました。";
+  })
+  .setOnStart(function () {
+    statusNode.innerHTML = "再生が開始しました。";
+  })
+  .setOnPause(function () {
+    statusNode.innerHTML = "再生が中断しました。";
+  })
+  .setOnResume(function () {
+    statusNode.innerHTML = "再生が再開しました。";
+  })
+  .setOnEnd(function () {
+    statusNode.innerHTML = "再生が完了しました。";
+  });
 })();
 
-    </script>
+  </script>
 </html>
